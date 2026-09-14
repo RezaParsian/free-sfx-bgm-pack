@@ -1,0 +1,4 @@
+numpy>=1.24
+scipy>=1.10
+openpyxl>=3.1        # فقط برای ساخت guides/audio-library.xlsx
+imageio-ffmpeg>=0.4  # فقط برای encode_mp3.py (باینری ffmpeg را خودش می‌آورد)
