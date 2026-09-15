@@ -3,6 +3,7 @@ import os, csv, glob, wave
 
 ROOT = os.environ.get("PACKDIR", "../audio-pack")
 OUT = os.environ.get("OUTFILE", "../guides/guide.html")
+BASE = os.environ.get("BASE", "../")   # پیشوند لینک‌ها: روت="" ، guides="../"
 
 # خواندن مدت زمان واقعی از فایل‌های WAV
 DUR = {}
@@ -166,6 +167,9 @@ th{background:#232c4d;color:#dbe2ff;text-align:right;padding:11px 12px;font-weig
 td{padding:10px 12px;border-bottom:1px solid #202945;vertical-align:top;color:#dfe4f4}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#1a2240}
+.dl{white-space:nowrap}
+.dl a{font-size:10px;font-family:Consolas,monospace;color:#8fe3c8;border:1px solid var(--line);border-radius:5px;padding:0 5px;margin:0 3px;text-decoration:none;background:#0f1730}
+.dl a:hover{background:#25305a;color:#fff}
 code{background:#0f1730;border:1px solid var(--line);border-radius:6px;padding:1.5px 7px;font-family:'SFMono-Regular',Consolas,monospace;font-size:12.4px;color:#8fe3c8;direction:ltr;display:inline-block}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0}
 .card h4{margin:0 0 8px;font-size:16px}
@@ -375,9 +379,27 @@ A("<div class='card'><h4>سریع‌ترین ترفند</h4><p>برای موزی
 A("</div>")
 
 A("<footer>ساخته‌شده با سنتز DSP — همه‌ی فایل‌ها اورجینال و بدون کپی‌رایت هستند. "
-  "راهنمای کامل متنی در <code>guides/README.md</code> و جدول فیلترشدنی در <code>guides/audio-library.xlsx</code>.</footer>")
+  "راهنمای کامل متنی در <code>guides/README.md</code> و جدول فیلترشدنی در <code>guides/audio-library.xlsx</code> — کنار هر اسم فایل، لینک‌های <b>⬇mp3 / ⬇wav</b> برای دانلود مستقیم است.</footer>")
 A("</div></body></html>")
 
-os.makedirs(os.path.dirname(OUT), exist_ok=True)
-open(OUT, "w", encoding="utf-8").write("".join(H))
+import re
+html = "".join(H)
+
+NAMES = sorted(DUR.keys(), key=len, reverse=True)
+PAT = re.compile(r"\b(" + "|".join(re.escape(n) for n in NAMES) + r")\b")
+
+def _pills(n):
+    sub = "bgm" if n.startswith("bgm_") else "sfx"
+    mp3 = f"{BASE}audio-pack/mp3/{sub}/{n}.mp3"
+    wav = f"{BASE}audio-pack/{sub}/{n}.wav"
+    return (f"{n}<span class='dl'><a href='{mp3}' download title='دانلود MP3'>⬇mp3</a>"
+            f"<a href='{wav}' download title='دانلود WAV'>⬇wav</a></span>")
+
+def _code(m):
+    return "<code>" + PAT.sub(lambda mm: _pills(mm.group(1)), m.group(1)) + "</code>"
+
+html = re.sub(r"<code>(.*?)</code>", _code, html, flags=re.S)
+
+os.makedirs(os.path.dirname(OUT) or ".", exist_ok=True)
+open(OUT, "w", encoding="utf-8").write(html)
 print("saved:", OUT, os.path.getsize(OUT), "bytes")

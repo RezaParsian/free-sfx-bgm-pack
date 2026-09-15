@@ -58,9 +58,12 @@ guides/
 
 sfx-lab/            the generator — every file is reproducible from source
 
+index.html          the visual guide at the repo ROOT — GitHub Pages serves it as the site homepage
 social-preview.png  1280×640 GitHub social preview (upload via repo Settings → Social preview)
 repo-icon.png       512×512 matching square icon (profile / org avatar, favicon)
 ```
+
+Every filename mentioned inside `index.html` / `guides/guide.html` carries inline **⬇mp3 / ⬇wav** download links, so the guide doubles as a download portal when published via GitHub Pages.
 
 ### Sound effects (31)
 
@@ -125,7 +128,8 @@ cd sfx-lab
 OUTDIR=../audio-pack/sfx  python3 build_sfx_extra.py   # all 40 effects
 OUTDIR=../audio-pack/bgm  python3 build_bgm.py         # all 9 tracks
 PACKDIR=../audio-pack     python3 encode_mp3.py        # MP3 + loudnorm + LUFS report
-OUTFILE=../guides/guide.html python3 build_html.py     # regenerate the HTML guide
+BASE=""     OUTFILE=../index.html       python3 build_html.py   # root copy (Pages homepage)
+BASE="../"  OUTFILE=../guides/guide.html python3 build_html.py   # guides/ copy
 OUTDIR=../guides/audio-library.xlsx python3 build_xlsx.py
 ```
 
