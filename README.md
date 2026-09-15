@@ -1,12 +1,12 @@
 # 🔊 Code-Synthesized SFX & BGM Library for Content Creators
 
-**31 sound effects + 8 background music tracks — generated entirely from code (DSP synthesis). Zero samples, zero copyright risk, zero Content ID claims.**
+**40 sound effects + 9 background music tracks — generated entirely from code (DSP synthesis). Zero samples, zero copyright risk, zero Content ID claims.**
 
 Built for tech & educational creators on YouTube and Instagram, and shipped with a full Persian guide on *exactly where to place every sound in your timeline*.
 
 > 🇮🇷 راهنمای کامل فارسی: **[START-HERE.fa.md](START-HERE.fa.md)** · نسخه‌ی بصری: [`guides/guide.html`](guides/guide.html)
 
-![license](https://img.shields.io/badge/license-CC0--1.0-blue) ![files](https://img.shields.io/badge/audio-39%20files-green) ![format](https://img.shields.io/badge/format-WAV%20%2B%20MP3-orange) ![claims](https://img.shields.io/badge/Content%20ID%20claims-0-brightgreen)
+![license](https://img.shields.io/badge/license-CC0--1.0-blue) ![files](https://img.shields.io/badge/audio-49%20files-green) ![format](https://img.shields.io/badge/format-WAV%20%2B%20MP3-orange) ![claims](https://img.shields.io/badge/Content%20ID%20claims-0-brightgreen)
 
 ---
 
@@ -30,12 +30,14 @@ This one contains **no recordings at all**. Every waveform is computed from scra
 
 ## ▶ Listen
 
-https://github.com/user/repo/blob/main/audio-pack/mp3/sfx/whoosh_transition.mp3
-https://github.com/user/repo/blob/main/audio-pack/mp3/sfx/impact_deep.mp3
-https://github.com/user/repo/blob/main/audio-pack/mp3/sfx/ui_click.mp3
-https://github.com/user/repo/blob/main/audio-pack/mp3/bgm/bgm_tech_explainer.mp3
+https://github.com/RezaParsian/free-sfx-bgm-pack/blob/master/audio-pack/mp3/sfx/whoosh_transition.mp3
+https://github.com/RezaParsian/free-sfx-bgm-pack/blob/master/audio-pack/mp3/sfx/type_burst_mech.mp3
+https://github.com/RezaParsian/free-sfx-bgm-pack/blob/master/audio-pack/mp3/sfx/impact_deep.mp3
+https://github.com/RezaParsian/free-sfx-bgm-pack/blob/master/audio-pack/mp3/sfx/type_enter.mp3
+https://github.com/RezaParsian/free-sfx-bgm-pack/blob/master/audio-pack/mp3/bgm/bgm_terminal_flow.mp3
+https://github.com/RezaParsian/free-sfx-bgm-pack/blob/master/audio-pack/mp3/bgm/bgm_tech_explainer.mp3
 
-*(GitHub renders any `.mp3` link in a README as an inline player — replace `user/repo` with your own path after pushing, or just open the files from `audio-pack/mp3/`.)*
+*(GitHub renders any `.mp3` link in a README as an inline player.)*
 
 ---
 
@@ -43,8 +45,8 @@ https://github.com/user/repo/blob/main/audio-pack/mp3/bgm/bgm_tech_explainer.mp3
 
 ```
 audio-pack/
-├── sfx/            31 sound effects — WAV (stereo, 44.1 kHz, master quality)
-├── bgm/            8 music tracks — WAV
+├── sfx/            40 sound effects — WAV (stereo, 44.1 kHz, master quality)
+├── bgm/            9 music tracks — WAV
 ├── mp3/sfx/        same effects as MP3 (mobile / CapCut friendly)
 ├── mp3/bgm/        same tracks as MP3 (192 kbps)
 └── measured.csv    measured duration + integrated loudness of every file
@@ -69,6 +71,7 @@ repo-icon.png       512×512 matching square icon (profile / org avatar, favicon
 | **Alerts & feedback** | `notification_ding` `success_chime` `error_buzz` `coin_ping` `sparkle_magic` |
 | **Impacts & emphasis** | `impact_deep` `impact_bright` `boom_cinematic` `pop_bubble` `gong_section` `heartbeat_tension` |
 | **Creator tools** | `countdown_beeps` `countdown_tick_single` `air_horn_meme` `vinyl_stop` `laser_pew` `logo_sting` |
+| **Typing & terminal** | `type_key_single` `type_burst_mech` `type_burst_soft` `type_key_roll` `type_enter` `type_backspace` `terminal_bell` `prompt_tick` `scroll_ratchet` |
 | **Ambience (loopable)** | `room_tone_loop` `vinyl_crackle_loop` |
 
 ### Background music (8)
@@ -81,6 +84,7 @@ repo-icon.png       512×512 matching square icon (profile / org avatar, favicon
 | `bgm_playful_marimba` | 104 | Tips, bloopers, "common mistakes" |
 | `bgm_cinematic_tension` | 80 | Durability tests, "here's the problem" |
 | `bgm_lofi_focus` | 74 | Long tutorials, coding, study-with-me |
+| `bgm_terminal_flow` | 92 | Live coding, typing timelapses, long Linux terminal sessions |
 | `bgm_screen_bed` | 60 | Under screen recordings — nothing to fight your voice |
 | `bgm_ambient_underscore` | 60 | Concepts, diagrams, slides |
 
@@ -118,8 +122,8 @@ All files ship pre-normalized (SFX → −18 LUFS, music → −20 LUFS), so dro
 pip install -r requirements.txt
 
 cd sfx-lab
-OUTDIR=../audio-pack/sfx  python3 build_sfx_extra.py   # all 31 effects
-OUTDIR=../audio-pack/bgm  python3 build_bgm.py         # all 8 tracks
+OUTDIR=../audio-pack/sfx  python3 build_sfx_extra.py   # all 40 effects
+OUTDIR=../audio-pack/bgm  python3 build_bgm.py         # all 9 tracks
 PACKDIR=../audio-pack     python3 encode_mp3.py        # MP3 + loudnorm + LUFS report
 OUTFILE=../guides/guide.html python3 build_html.py     # regenerate the HTML guide
 OUTDIR=../guides/audio-library.xlsx python3 build_xlsx.py

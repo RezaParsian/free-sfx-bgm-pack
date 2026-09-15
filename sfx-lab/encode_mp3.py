@@ -38,7 +38,7 @@ for kind, mode_long in [("sfx", "loud"), ("bgm", "loudmusic")]:
         dst = os.path.join(ROOT, "mp3", kind, n + ".mp3")
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         enc(src, dst, mode)
-        L = lufs(dst)
+        L = lufs(dst) if d >= 0.8 else "n/a_short"
         report.append((kind, n, round(d, 2), mode, L, os.path.getsize(dst)))
         print(f"{kind:4s} {n:28s} {d:6.2f}s  {mode:9s} {str(L):>7s} LUFS  {os.path.getsize(dst)//1024:5d} KB")
 

@@ -2,7 +2,7 @@
 make_social_preview.py — ساخت تصویر Social Preview برای گیت‌هاب (۱۲۸۰×۶۴۰)
 نکته: نوارهای طیف از FFT واقعیِ فایل bgm_tech_explainer.mp3 گرفته می‌شن.
 """
-import os, subprocess, numpy as np
+import os, glob, subprocess, numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 import imageio_ffmpeg
 
@@ -14,6 +14,8 @@ OUTDIR = os.environ.get("OUTDIR", ".")
 AUDIO = os.environ.get("AUDIO", "audio-pack/mp3/bgm/bgm_tech_explainer.mp3")
 AUDIO2 = os.environ.get("AUDIO2", "audio-pack/mp3/bgm/bgm_hook_loop_8s.mp3")
 HANDLE = os.environ.get("HANDLE", "")
+N_SFX = len(glob.glob(os.environ.get("SFXDIR", "audio-pack/sfx") + "/*.wav"))
+N_BGM = len(glob.glob(os.environ.get("BGMDIR", "audio-pack/bgm") + "/*.wav"))
 TITLE1 = os.environ.get("TITLE1", "Code-Synthesized")
 TITLE2 = os.environ.get("TITLE2", "SFX & BGM Library")
 
@@ -142,8 +144,8 @@ def main():
     d = radial_spectrum(img, vals, cx, cy, r_in, r_out)
 
     fc = font("JetBrainsMono.ttf", 12.5, None)
-    d.text((cx, cy - 12 * S), "31 SFX", font=font("Inter.ttf", 25, 800), fill=C_TX, anchor="mm")
-    d.text((cx, cy + 16 * S), "8 BGM", font=font("Inter.ttf", 25, 800), fill=C_ACC2, anchor="mm")
+    d.text((cx, cy - 12 * S), f"{N_SFX} SFX", font=font("Inter.ttf", 25, 800), fill=C_TX, anchor="mm")
+    d.text((cx, cy + 16 * S), f"{N_BGM} BGM", font=font("Inter.ttf", 25, 800), fill=C_ACC2, anchor="mm")
     d.text((cx, cy + 46 * S), "TRACKS", font=fc, fill=C_MUT, anchor="mm")
 
     # ── متن سمت راستِ طیف (چپِ تصویر)
@@ -168,7 +170,7 @@ def main():
 
     # ── بلوک‌های آماری
     y += int(26 * S)
-    stats = [("31", "SOUND EFFECTS"), ("8", "MUSIC TRACKS"), ("0", "COPYRIGHT CLAIMS"), ("0", "ATTRIBUTION")]
+    stats = [(str(N_SFX), "SOUND EFFECTS"), (str(N_BGM), "MUSIC TRACKS"), ("0", "COPYRIGHT CLAIMS"), ("0", "ATTRIBUTION")]
     sx = x0
     f_num = font("Inter.ttf", 37, 900)
     f_lab = font("JetBrainsMono.ttf", 10.5)

@@ -428,8 +428,50 @@ def upbeat_vlog(bars=12, bpm=112):
     return render("bgm_upbeat_vlog", [(buf, 0, 1.0)], total, fade_in=1.0, fade_out=2.5, peak=.78)
 
 
+
+
+# ═══════════════ ۹) Terminal Flow (خالص‌ترین ترک برای کدنویسی زنده / ترمینال لینوکس) ═══════════════
+def terminal_flow(bars=14, bpm=92):
+    """مینیمال و تاریک-خنثی: پالس ساب + پلاک‌های پنتاتونیک پراکنده + اکو.
+    عمداً وسط طیف (۱–۴kHz) خالی نگه داشته شده تا زیر صدای راوی گم نشود."""
+    spb = 60 / bpm; bar = 4 * spb; total = bars * bar
+    prog = [["A2", "E3", "B3"], ["F2", "C3", "G3"], ["C3", "G3", "D4"], ["G2", "D3", "A3"]]
+    penta = ["A3", "C4", "D4", "E4", "G4", "A4"]
+    tr = []
+    rng = np.random.default_rng(4242)
+    for b in range(bars):
+        t0 = b * bar
+        ch = prog[b % 4]
+        # پد باز و تاریک
+        tr.append((pad_chord([hz(f) for f in ch], bar * 1.3, seed=b + 60), t0, .30))
+        # سابِ هر میزان
+        tr.append((bass_note(hz(ch[0]), spb * 3.2), t0, .38))
+        # پالس نرم (ضربان، نه درام)
+        for beat in (0, 2):
+            tr.append((kick(soft=True), t0 + beat * spb, .26))
+        # های‌هت خیلی ظریف روی آف‌بیت‌ها
+        for beat in range(4):
+            tr.append((hat(.035), t0 + beat * spb + spb / 2, .085))
+        # پلاک‌های پنتاتونیک پراکنده + اکوی تأخیری
+        if rng.random() < 0.85:
+            nn = str(rng.choice(penta))
+            at = t0 + rng.uniform(0.2, 2.2) * spb
+            note = pluck(hz(nn), spb * 1.4, bright=.5, damp=.996, seed=600 + b)
+            tr.append((note, at, .20))
+            tr.append((note * .45, at + spb * .75, .10))     # اکو
+            tr.append((note * .2, at + spb * 1.5, .05))      # اکوی دوم
+        if b % 4 == 3:
+            tr.append((shaker(.1), t0 + spb * 3.5, .07))
+    buf = np.zeros(int(SR * total))
+    for sig, at, g in tr:
+        buf = place(buf, sig, at, g)
+    buf *= sidechain(len(buf), bpm, depth=.78)
+    buf = reverb_bus(buf, 2.4, .26, damp=4600)
+    return render("bgm_terminal_flow", [(buf, 0, 1.0)], total, fade_in=2.0, fade_out=3.0, peak=.74, master_lp=5200)
+
+
 BUILD = [tech_explainer, hook_loop, lofi_focus, ambient_underscore, playful_marimba,
-         cinematic_tension, screen_bed, upbeat_vlog]
+         cinematic_tension, screen_bed, upbeat_vlog, terminal_flow]
 
 if __name__ == "__main__":
     import time
